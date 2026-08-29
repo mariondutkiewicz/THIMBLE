@@ -63,3 +63,18 @@ qsub -cwd -V -N MD_trimmomatic_meta \
 	-M marion.dutkiewicz@aphp.fr,nicolas.godron@inserm.fr \
 	-b y \
 	$TRIM_COMMAND
+
+# ~~~ STEP 2.1: FastQC (post-trimming) ~~~
+FASTQC_ENV="fastqc-0.12.1"
+POSTTRIM_FASTQC_OUTDIR="${OUTPUT_DIR_META}2.1-fastqc_posttrim/"
+POSTTRIM_FASTQC_COMMAND="conda activate $FASTQC_ENV && $MAIN_DIR/scripts_meta/2.1-fastqc_post.sh $TRIM_OUTDIR $POSTTRIM_FASTQC_OUTDIR $THREADS && conda deactivate"
+
+mkdir -p $POSTTRIM_FASTQC_OUTDIR
+
+qsub -cwd -V -N MD_fastQC_posttrim_meta \
+	-q short.q \
+	-pe thread $THREADS \
+	-m ea \
+	-M marion.dutkiewicz@aphp.fr,nicolas.godron@inserm.fr \
+	-b y \
+	$POSTTRIM_FASTQC_COMMAND

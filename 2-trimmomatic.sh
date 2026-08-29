@@ -30,7 +30,6 @@ echo "Threads per job: $THREADS_PER_JOB"
 echo "Parallel jobs: $NUM_PARALLEL"
 echo ""
 
-
 # Read R1 files and parallelize
 grep "${R1_SUFFIX}${FASTQ_SUFFIX}" "$FASTQ_PATHS" | xargs -P $NUM_PARALLEL -I {} bash -c '
   R1="{}"
@@ -65,21 +64,7 @@ grep "${R1_SUFFIX}${FASTQ_SUFFIX}" "$FASTQ_PATHS" | xargs -P $NUM_PARALLEL -I {}
     "$OUT_R1P" "$OUT_R1U" \
     "$OUT_R2P" "$OUT_R2U" \
     ILLUMINACLIP:TruSeq3-PE.fa:2:30:10 \
-    LEADING:20 TRAILING:20 SLIDINGWINDOW:4:15 MINLEN:51 \
-    2>&1 | tee "$TRIM_LOG"
+    LEADING:20 TRAILING:20 SLIDINGWINDOW:4:15 MINLEN:51
   
-  # Append trimmomatic output to shared log with lock
-  (
-    flock -x 200
-    cat "$TRIM_LOG" >> "$SHARED_LOG"
-    echo "" >> "$SHARED_LOG"
-  ) 200>"$LOCK_FILE"
-  
-  rm -f "$TRIM_LOG"
-'
-
-# Clean up lock file
-rm -f "$LOCK_FILE"
-
 echo "Trimmomatic processing completed"
-echo "Log file: $SHARED_LOG"
+'

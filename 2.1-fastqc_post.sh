@@ -36,6 +36,9 @@ grep -v "^#\|^$" "$SAMPLES_LIST" | xargs -P $NUM_PARALLEL -I {} bash -c '
   
   mapfile -t INPUT_FILE < <(find "$TRIM_OUTDIR" -maxdepth 1 -name "${SAMPLE_ID}_S*_L*_R1_001.fastq.gz_*.trimmed.fq.gz" | sort)
 
+  echo "DEBUG SAMPLE=$SAMPLE NB_FILES=${#INPUT_FILES[@]}"
+  printf "  -> %s\n" "${INPUT_FILES[@]}"
+
   fastqc \
   --outdir "$POSTTRIM_FASTQC_OUTDIR" \
   --noextract \

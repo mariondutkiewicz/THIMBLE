@@ -35,7 +35,7 @@ grep -v "^#\|^$" "$FASTQ_PATHS" | xargs -P $NUM_PARALLEL -I {} bash -c '
   fastqc \
   --outdir "$PRETRIM_FASTQC_OUTDIR" \
   --noextract \
-  --threads \
+  --threads "$THREADS_PER_JOB" \
   "$FASTQ_PATHS"
   
 echo "FastQC analysis completed"

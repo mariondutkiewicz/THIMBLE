@@ -18,6 +18,10 @@ OUTPUT_DIR_META="${MAIN_DIR}/output_meta/"
 
 ###### MAIN PARAMETERS ###########
 THREADS=64
+R1_SUFFIX="R1_001"
+R2_SUFFIX="R2_001"
+FASTQ_SUFFIX=".fastq.gz"
+FASTA_EXTENSION=".fasta"
 
 ###### ABSOLUTE PATHS ###########
 # Absolute path to a text file with one sample name per line (without the "fastq.gz" extension)

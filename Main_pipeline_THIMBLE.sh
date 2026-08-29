@@ -46,3 +46,18 @@ qsub -cwd -V -N MD_fastQC_pretrim_meta \
 	-M marion.dutkiewicz@aphp.fr,nicolas.godron@inserm.fr \
 	-b y \
 	$PRETRIM_FASTQC_COMMAND
+
+# ~~~ STEP 2: Trimmomatic ~~~
+TRIM_ENV="trimmomatic-0.39"
+TRIM_OUTDIR="${OUTPUT_DIR_META}2-trimmomatic/"
+TRIM_INTER="${INTERMEDIATE_DIR_META}trimming_intermediate/"
+TRIM_COMMAND="conda activate $TRIM_ENV && $MAIN_DIR/scripts_meta/2-trimmomatic.sh \
+	$FASTQ_PATHS $TRIM_OUTDIR $TRIM_INTER $THREADS $R1_SUFFIX $R2_SUFFIX $FASTQ_SUFFIX && conda deactivate"
+
+Tqsub -cwd -V -N MD_trimmomatic_meta \
+	-q short.q \
+	-pe thread $THREADS \
+	-m ea \
+	-M marion.dutkiewicz@aphp.fr,nicolas.godron@inserm.fr \
+	-b y \
+	$TRIM_COMMAND

@@ -1,45 +1,42 @@
 #!/bin/bash
 
-# Script: 1-fastqc.sh
-# Usage: ./1-fastqc.sh <fastq_paths_or_dir> <output_dir> <threads>
+# Script: 1-fastqc_pre.sh
+# Usage: ./1-fastqc_pre.sh <fastq> <output_dir> <threads>
 
 set -e
 
-INPUT="$1"
-FASTQC_OUTDIR="$2"
+FASTQ_PATHS="$1"
+PRETRIM_FASTQC_OUTDIR="$2"
 THREADS="$3"
 
-NUM_PARALLEL=$THREADS
+THREADS_PER_JOB=8
+NUM_PARALLEL=$((THREADS / THREADS_PER_JOB))
 
 # Validate input
-if [[ ! -e "$INPUT" ]]; then
-    echo "Error: Input '$INPUT' not found"
+if [[ ! -e "$FASTQ_PATHS" ]]; then
+    echo "Error: Input '$FASTQ_PATHS' not found"
     exit 1
 fi
 
-mkdir -p "$FASTQC_OUTDIR"
+mkdir -p "$PRETRIM_FASTQC_OUTDIR"
 
 echo "Starting FastQC analysis"
 echo "Total threads: $THREADS"
+echo "Threads per job: $THREADS_PER_JOB"
 echo "Parallel jobs: $NUM_PARALLEL"
 echo ""
 
-# Process all fastq files in parallel
-echo "$FILE_LIST" | xargs -P $NUM_PARALLEL -I {} bash -c '
-  FASTQ_FILE="{}"
-  FASTQC_OUTDIR="'"$FASTQC_OUTDIR"'"
-  SHARED_LOG="'"$SHARED_LOG"'"
-  LOCK_FILE="'"$LOCK_FILE"'"
+# Process samples in parallel with xargs
+grep -v "^#\|^$" "$FASTQ_PATHS" | xargs -P $NUM_PARALLEL -I {} bash -c '
+  FASTQ_PATHS="{}"
+  PRETRIM_FASTQC_OUTDIR="'"$PRETRIM_FASTQC_OUTDIR"'"
+  THREADS_PER_JOB="'"$THREADS_PER_JOB"'"
   
-  # Validate file
-  if [[ ! -f "$FASTQ_FILE" ]]; then
-    echo "Error: FASTQ file not found: $FASTQ_FILE"
-    exit 1
-  fi
+  fastqc \
+  --outdir "$PRETRIM_FASTQC_OUTDIR" \
+  --noextract \
+  --threads \
+  "$FASTQ_PATHS"
   
-  BASENAME=$(basename "$FASTQ_FILE" | sed "s/\\.fq\\.gz\|\\.fastq\\.gz\|\\.fq\|\\.fastq|\\.trimmed\\.fq\\.gz//")
-  
-  fastqc -o "$FASTQC_OUTDIR" --noextract "$FASTQ_FILE" 2>&1
-  
-echo "FastQC analysis completed for $BASENAME"
+echo "FastQC analysis completed"
 '

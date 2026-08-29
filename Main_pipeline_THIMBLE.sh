@@ -80,3 +80,21 @@ qsub -cwd -V -N MD_fastQC_posttrim_meta \
 	-M marion.dutkiewicz@aphp.fr,nicolas.godron@inserm.fr \
 	-b y \
 	$POSTTRIM_FASTQC_COMMAND
+
+
+# ~~~ STEP 3: Kraken2 ~~~
+TRIM_OUTDIR="${OUTPUT_DIR_META}2-trimmomatic/"
+
+KRAKEN_ENV="kraken2-2.17.1"
+KRAKEN_OUTDIR="${OUTPUT_DIR_META}3-kraken/"
+KRAKEN_COMMAND="conda activate $KRAKEN_ENV && $MAIN_DIR/scripts_meta/3-kraken2.sh $TRIM_OUTDIR $KRAKEN_OUTDIR $SAMPLES_LIST $THREADS && conda deactivate"
+
+mkdir -p $KRAKEN_OUTDIR
+
+qsub -cwd -V -N MD_kraken2 \
+	-q short.q \
+	-pe thread $THREADS \
+	-m ea \
+	-M marion.dutkiewicz@aphp.fr,nicolas.godron@inserm.fr \
+	-b y \
+	$KRAKEN_COMMAND

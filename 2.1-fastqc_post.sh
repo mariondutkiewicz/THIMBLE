@@ -34,13 +34,13 @@ grep -v "^#\|^$" "$SAMPLES_LIST" | xargs -P $NUM_PARALLEL -I {} bash -c '
   POSTTRIM_FASTQC_OUTDIR="'"$POSTTRIM_FASTQC_OUTDIR"'"
   THREADS_PER_JOB="'"$THREADS_PER_JOB"'"
   
-  INPUT_FILE=$(find "$TRIM_OUTDIR" -maxdepth 1 -name "${SAMPLE_ID}_S*_L*_R1_001.fastq.gz_*.trimmed.fq.gz" | sort)
-  
+  mapfile -t INPUT_FILE < <(find "$TRIM_OUTDIR" -maxdepth 1 -name "${SAMPLE_ID}_S*_L*_R1_001.fastq.gz_*.trimmed.fq.gz" | sort)
+
   fastqc \
   --outdir "$POSTTRIM_FASTQC_OUTDIR" \
   --noextract \
   --threads "$THREADS_PER_JOB" \
-  "$INPUT_FILE"
+  "${INPUT_FILES[@]}"
   
 echo "FastQC analysis completed"
 '

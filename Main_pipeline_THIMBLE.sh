@@ -54,7 +54,9 @@ TRIM_INTER="${INTERMEDIATE_DIR_META}trimming_intermediate/"
 TRIM_COMMAND="conda activate $TRIM_ENV && $MAIN_DIR/scripts_meta/2-trimmomatic.sh \
 	$FASTQ_PATHS $TRIM_OUTDIR $TRIM_INTER $THREADS $R1_SUFFIX $R2_SUFFIX $FASTQ_SUFFIX && conda deactivate"
 
-Tqsub -cwd -V -N MD_trimmomatic_meta \
+mkdir $TRIM_OUTDIR $TRIM_INTER
+
+qsub -cwd -V -N MD_trimmomatic_meta \
 	-q short.q \
 	-pe thread $THREADS \
 	-m ea \

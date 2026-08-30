@@ -98,3 +98,20 @@ qsub -cwd -V -N MD_kraken2 \
 	-M marion.dutkiewicz@aphp.fr,nicolas.godron@inserm.fr \
 	-b y \
 	$KRAKEN_COMMAND
+
+# ~~~ STEP 3.1: Bracken ~~~
+KRAKEN_OUTDIR="${OUTPUT_DIR_META}3-kraken/"
+
+BRACKEN_ENV="bracken-3.1"
+BRACKEN_OUTDIR="${OUTPUT_DIR_META}3.1-bracken/"
+BRACKEN_COMMAND="conda activate $BRACKEN_ENV && $MAIN_DIR/scripts_meta/3.1-bracken.sh $KRAKEN_OUTDIR $BRACKEN_OUTDIR $SAMPLES_LIST && conda deactivate"
+
+mkdir -p $BRACKEN_OUTDIR
+
+qsub -cwd -V -N MD_bracken \
+	-q short.q \
+	-pe thread $THREADS \
+	-m ea \
+	-M marion.dutkiewicz@aphp.fr,nicolas.godron@inserm.fr \
+	-b y \
+	$BRACKEN_COMMAND

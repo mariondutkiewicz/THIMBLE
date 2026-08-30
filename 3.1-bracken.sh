@@ -29,13 +29,13 @@ grep -v "^#\|^$" "$SAMPLES_LIST" | xargs -P "$NUM_PARALLEL" -I {} bash -c '
   BRACKEN_OUTDIR="'"$BRACKEN_OUTDIR"'"
 
     bracken \
-      MY_DB /db/outils/kraken2-2026/k2_standard_20260226 \
-      INPUT "$KRAKEN_OUTDIR/${SAMPLE_ID}.report" \
-      OUTPUT "$BRACKEN_OUTDIR/${SAMPLE_ID}_bracken_species.txt" \
-      OUTREPORT "$BRACKEN_OUTDIR/${SAMPLE_ID}_bracken.report" \
-      READ_LEN 150 \
-      LEVEL S \
-      THRESHOLD 0 
+      -d /db/outils/kraken2-2026/k2_standard_20260226 \
+      -i "$KRAKEN_OUTDIR/${SAMPLE_ID}.report" \
+      -o "$BRACKEN_OUTDIR/${SAMPLE_ID}_bracken_species.txt" \
+      -w "$BRACKEN_OUTDIR/${SAMPLE_ID}_bracken.report" \
+      -r 150 \
+      -l S \
+      -t 0 
 
 echo "bracken processing completed for $SAMPLE_ID"
 '

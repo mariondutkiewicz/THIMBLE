@@ -9,7 +9,9 @@ flowchart TD
     Raw_reads -- "Quality control before trimming" --> FastQC+MultiQC
     Raw_reads --> Trimmomatic
 
-    Filtlong -- "Quality control after trimming" --> FastQC+MultiQC
-    Filtlong -- "Trimmed reads" --> Kraken2
+    Trimmomatic -- "Quality control after trimming" --> FastQC+MultiQC
+    Trimmomatic -- "Trimmed reads" --> Kraken2
+
+    Kraken2 -- "Kraken_reports" --> Bracken
     
 ```

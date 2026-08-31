@@ -40,3 +40,14 @@ echo "bracken processing completed for $SAMPLE_ID"
 '
 
 # Au moment du premier lancement de Bracken, pour que ce soit plus propre -w "$BRACKEN_OUTDIR/${SAMPLE_ID}_bracken.report" \
+
+# Lignes pour concaténer les sorties de bracken
+# BRACKEN_OUTDIR="3.1-bracken"
+# OUTPUT_TSV="all_samples_bracken_families.tsv"
+
+# echo -e "sample\tname\ttaxonomy_id\ttaxonomy_lvl\tkraken_assigned_reads\tadded_reads\tnew_est_reads\tfraction_total_reads" > "$OUTPUT_TSV"
+
+# for f in "$BRACKEN_OUTDIR"/*_bracken_families.txt; do
+   # SAMPLE=$(basename "$f" _bracken_families.txt)
+   # tail -n +2 "$f" | awk -F'\t' -v sample="$SAMPLE" 'BEGIN{OFS="\t"} {print sample, $0}' >> "$OUTPUT_TSV"
+#done

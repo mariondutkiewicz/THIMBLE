@@ -31,11 +31,12 @@ grep -v "^#\|^$" "$SAMPLES_LIST" | xargs -P "$NUM_PARALLEL" -I {} bash -c '
     bracken \
       -d /db/outils/kraken2-2026/k2_standard_20260226 \
       -i "$KRAKEN_OUTDIR/${SAMPLE_ID}.report" \
-      -o "$BRACKEN_OUTDIR/${SAMPLE_ID}_bracken_species.txt" \
-      -w "$BRACKEN_OUTDIR/${SAMPLE_ID}_bracken.report" \
+      -o "$BRACKEN_OUTDIR/${SAMPLE_ID}_bracken_order.txt" \
       -r 150 \
-      -l S \
-      -t 0 
+      -l O \
+      -t 10 
 
 echo "bracken processing completed for $SAMPLE_ID"
 '
+
+# Au moment du premier lancement de Bracken, pour que ce soit plus propre -w "$BRACKEN_OUTDIR/${SAMPLE_ID}_bracken.report" \

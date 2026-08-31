@@ -31,9 +31,9 @@ grep -v "^#\|^$" "$SAMPLES_LIST" | xargs -P "$NUM_PARALLEL" -I {} bash -c '
     bracken \
       -d /db/outils/kraken2-2026/k2_standard_20260226 \
       -i "$KRAKEN_OUTDIR/${SAMPLE_ID}.report" \
-      -o "$BRACKEN_OUTDIR/${SAMPLE_ID}_bracken_order.txt" \
+      -o "$BRACKEN_OUTDIR/${SAMPLE_ID}_bracken_genus.txt" \
       -r 150 \
-      -l O \
+      -l G \
       -t 10 
 
 echo "bracken processing completed for $SAMPLE_ID"

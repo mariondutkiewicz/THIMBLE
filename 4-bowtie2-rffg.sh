@@ -44,6 +44,7 @@ grep -v "^#\|^$" "$SAMPLES_LIST" | xargs -P "$NUM_PARALLEL" -I {} bash -c '
     -2 <(zcat "${R2_FILES[@]}") \
     -p "$THREADS_PER_JOB" \
     --sensitive-local \
+    --no-unal \
     | samtools sort -@ "$THREADS_PER_JOB" -o "$BOWTIE_OUTDIR/${SAMPLE_ID}.sorted.bam" -
     
   samtools index "$BOWTIE_OUTDIR/${SAMPLE_ID}.sorted.bam"

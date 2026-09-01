@@ -115,3 +115,23 @@ qsub -cwd -V -N MD_bracken \
 	-M marion.dutkiewicz@aphp.fr,nicolas.godron@inserm.fr \
 	-b y \
 	$BRACKEN_COMMAND
+
+# ~~~ STEP 4: Bowtie2 - ResFinderFG ~~~
+TRIM_OUTDIR="${OUTPUT_DIR_META}2-trimmomatic/"
+
+BOWTIE_ENV="bowtie2-2.5.4"
+SAMTOOL_ENV="samtools-1.21"
+
+BOWTIE_OUTDIR="${OUTPUT_DIR_META}4-bowtie-rffg/"
+
+BOWTIE_COMMAND="conda activate $BOWTIE_ENV && conda activate --stack $SAMTOOL_ENV && $MAIN_DIR/scripts_meta/4-bowtie2-rffg.sh $TRIM_OUTDIR $BOWTIE_OUTDIR $SAMPLES_LIST && conda deactivate"
+
+mkdir -p $BOWTIE_OUTDIR
+
+qsub -cwd -V -N MD_bowtie2-rffg \
+	-q short.q \
+	-pe thread $THREADS \
+	-m ea \
+	-M marion.dutkiewicz@aphp.fr,nicolas.godron@inserm.fr \
+	-b y \
+	$BOWTIE_COMMAND

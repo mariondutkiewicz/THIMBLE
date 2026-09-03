@@ -33,7 +33,7 @@ grep -v "^#\|^$" "$SAMPLES_LIST" | xargs -P "$NUM_PARALLEL" -I {} bash -c '
   BOWTIE_OUTDIR="'"$BOWTIE_OUTDIR"'"
   THREADS_PER_JOB="'"$THREADS_PER_JOB"'"
 
-  BOWTIE2_INDEX_RF4="/work_home/mdutkiewicz/2026_Sewage_surveillance/db_resfinder4/"
+  BOWTIE2_INDEX_RF4="/work_home/mdutkiewicz/2026_Sewage_surveillance/db_resfinder4/resfinder4"
 
   mapfile -t R1_FILES < <(find "$TRIM_OUTDIR" -maxdepth 1 -name "${SAMPLE_ID}_S*_L*_R1_001.fastq.gz_1.trimmed.fq.gz" | sort)
   mapfile -t R2_FILES < <(find "$TRIM_OUTDIR" -maxdepth 1 -name "${SAMPLE_ID}_S*_L*_R1_001.fastq.gz_2.trimmed.fq.gz" | sort)

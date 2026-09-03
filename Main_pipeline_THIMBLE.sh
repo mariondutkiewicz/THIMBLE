@@ -135,3 +135,23 @@ qsub -cwd -V -N MD_bowtie2-rffg \
 	-M marion.dutkiewicz@aphp.fr,nicolas.godron@inserm.fr \
 	-b y \
 	$BOWTIE_COMMAND
+
+# ~~~ STEP 4: Bowtie2 - ResFinder4 ~~~
+TRIM_OUTDIR="${OUTPUT_DIR_META}2-trimmomatic/"
+
+BOWTIE_ENV="bowtie2-2.5.4"
+SAMTOOL_ENV="samtools-1.21"
+
+BOWTIE_OUTDIR="${OUTPUT_DIR_META}4.1-bowtie-rf4/"
+
+BOWTIE_COMMAND="conda activate $BOWTIE_ENV && conda activate --stack $SAMTOOL_ENV && $MAIN_DIR/scripts_meta/4.1-bowtie2-rf4.sh $TRIM_OUTDIR $BOWTIE_OUTDIR $SAMPLES_LIST && conda deactivate"
+
+mkdir -p $BOWTIE_OUTDIR
+
+qsub -cwd -V -N MD_bowtie2-rf4 \
+	-q short.q \
+	-pe thread $THREADS \
+	-m ea \
+	-M marion.dutkiewicz@aphp.fr,nicolas.godron@inserm.fr \
+	-b y \
+	$BOWTIE_COMMAND

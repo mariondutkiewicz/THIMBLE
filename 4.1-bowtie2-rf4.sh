@@ -57,7 +57,7 @@ OUTPUT_TSV="all_samples_ARG_counts_resfinder4.tsv"
 
 echo -e "sample\tgene\tgene_length\tmapped_reads" > "$OUTPUT_TSV"
 
-for bam in "$BOWTIE_OUTDIR"/*_resfinder4.sorted.bam; do
+for bam in ./*_resfinder4.sorted.bam; do
     SAMPLE=$(basename "$bam" _resfinder4.sorted.bam)
     samtools idxstats "$bam" | awk -F'\t' -v sample="$SAMPLE" 'BEGIN{OFS="\t"} $1 != "*" && $3 > 0 {print sample, $1, $2, $3}' >> "$OUTPUT_TSV"
 done

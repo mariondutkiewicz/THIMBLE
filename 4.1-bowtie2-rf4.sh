@@ -50,3 +50,14 @@ grep -v "^#\|^$" "$SAMPLES_LIST" | xargs -P "$NUM_PARALLEL" -I {} bash -c '
   samtools index "$BOWTIE_OUTDIR/${SAMPLE_ID}_resfinder4.sorted.bam"
   echo "bowtie2 processing completed for $SAMPLE_ID"
 '
+
+# à la fin, pour agréger les résultats
+BOWTIE_OUTDIR="4.1-bowtie-rf4"
+OUTPUT_TSV="all_samples_ARG_counts_resfinder4.tsv"
+
+echo -e "sample\tgene\tgene_length\tmapped_reads" > "$OUTPUT_TSV"
+
+for bam in "$BOWTIE_OUTDIR"/*_resfinder4.sorted.bam; do
+    SAMPLE=$(basename "$bam" _resfinder4.sorted.bam)
+    samtools idxstats "$bam" | awk -F'\t' -v sample="$SAMPLE" 'BEGIN{OFS="\t"} $1 != "*" && $3 > 0 {print sample, $1, $2, $3}' >> "$OUTPUT_TSV"
+done
